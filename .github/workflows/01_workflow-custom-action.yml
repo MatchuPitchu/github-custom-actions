@@ -68,13 +68,13 @@ jobs:
         run: ls
       - name: Deploy site
         run: echo "Deploying..."
-    information:
-      runs-on: ubuntu-latest
-      steps:
-        # use custom JavaScript action
-        # have to checkout the repo code to make it available - if custom action is stored in same repo
-        # checkout NOT needed, if it comes from another repo
-        - name: Get code
-          uses: actions/checkout@v3
-        - name: Run custom JS action
-          uses: ./.github/actions/deploy-s3-javascript
+  information:
+    runs-on: ubuntu-latest
+    steps:
+      # use custom JavaScript action
+      # have to checkout the repo code to make it available - if custom action is stored in same repo
+      # checkout NOT needed, if it comes from another repo
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Run custom JS action
+        uses: ./.github/actions/deploy-s3-javascript
