@@ -10,10 +10,16 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
       - name: Load & cache dependencies
+        id: cache-deps
         # a) if custom action stored in standalone repo
         # uses: MatchuPitchu/my-custom-action-repo-name
         # b) if custom action in same repo: relative path starts at root level of repo
         uses: ./.github/actions/cached-deps
+        with:
+          # set custom action input value
+          caching: 'false'
+      - name: Output custom action
+        run: echo "Cache used? ${{ steps.cache-deps.outputs.used-cache }}"
       - name: Lint code
         run: npm run lint
   test:

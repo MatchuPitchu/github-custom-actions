@@ -1,17 +1,38 @@
 name: 'Get & Cache Dependencies'
 description: 'Get the dependencies (via npm) and cache them'
+# configure action inputs
+inputs:
+  # custom identifier
+  caching:
+    description: 'Whether to cache dependencies or not'
+    required: false
+    default: 'true'
+  # ... add more inputs if needed
+# configure action outputs
+outputs:
+  used-cache:
+    description: 'Whether the cache was used'
+    value: ${{ steps.install.outputs.cache }}
+
 runs:
   # define that's a custom composite action
   using: 'composite'
   steps:
     - name: Cache dependencies
+      # use inputs context object to insert configured values above
+      if: inputs.caching == 'true'
       id: cache
       uses: actions/cache@v3
       with:
         path: node_modules
         key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
     - name: Install dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: npm ci
+      id: install
+      # execute npm installation if cache is staled OR if NO caching was set
+      if: steps.cache.outputs.cache-hit != 'true' || inputs.caching != 'true'
+      # only to show how output works: output is set to input.caching value
+      run: |
+        npm ci
+        echo "cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT
       # if run key is used, then shell definition is needed in custom action
       shell: bash
