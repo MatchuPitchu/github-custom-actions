@@ -5,5 +5,5 @@ runs:
   using: 'node16'
   # references to js files
   # pre: 'setup.js' # if setup needed
-  main: 'index.js'
+  main: 'main.js'
   # post: 'cleanup.js' # if cleanup needed
